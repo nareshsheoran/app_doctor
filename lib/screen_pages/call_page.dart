@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:permission_handler/permission_handler.dart';
 
 class CallPage extends StatefulWidget {
   const CallPage({Key? key}) : super(key: key);
@@ -22,7 +26,7 @@ class _CallPageState extends State<CallPage> {
   @override
   void initState() {
     super.initState();
-    // initAgora();
+    initAgora();
   }
 
   Future<void> initAgora() async {
@@ -53,6 +57,7 @@ class _CallPageState extends State<CallPage> {
             _engine?.disableAudio();
             _engine?.leaveChannel();
           });
+          Navigator.pop(context);
         },
       ),
     );
@@ -64,42 +69,27 @@ class _CallPageState extends State<CallPage> {
 
   @override
   Widget build(BuildContext context) {
-    image = ModalRoute
-        .of(context)
-        ?.settings
-        .arguments;
+    image = ModalRoute.of(context)?.settings.arguments;
     double radius = 24;
+    print("_remoteUid:::$_remoteUid");
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
             _remoteUid == null
                 ? Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(image.toString()),
-                    fit: BoxFit.fill,
-                  )),
-            )
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: NetworkImage(image.toString()),
+                      fit: BoxFit.fill,
+                    )),
+                  )
                 : Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: Center(child: _remoteVideo()),
-            ),
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(child: _remoteVideo())),
             Positioned(
               right: 0,
               top: 0,
@@ -112,7 +102,7 @@ class _CallPageState extends State<CallPage> {
                     children: [
                       Padding(
                         padding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -136,7 +126,7 @@ class _CallPageState extends State<CallPage> {
                             Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(360))),
+                                      BorderRadius.all(Radius.circular(360))),
                               child: CircleAvatar(
                                 radius: radius,
                                 backgroundColor: Colors.white,
@@ -155,22 +145,19 @@ class _CallPageState extends State<CallPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 4,
-                            horizontal: MediaQuery
-                                .of(context)
-                                .size
-                                .width / 10),
+                            horizontal: MediaQuery.of(context).size.width / 10),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               side: BorderSide(color: Colors.grey),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(360))),
+                                  BorderRadius.all(Radius.circular(360))),
                           child: CircleAvatar(
                             radius: radius,
                             backgroundColor: Colors.white,
                             child: GestureDetector(
                               onTap: () {
                                 setState(
-                                      () {
+                                  () {
                                     _engine?.disableAudio();
                                   },
                                 );
@@ -192,7 +179,7 @@ class _CallPageState extends State<CallPage> {
                             Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(360))),
+                                      BorderRadius.all(Radius.circular(360))),
                               child: CircleAvatar(
                                 radius: radius,
                                 backgroundColor: Colors.white,
@@ -232,7 +219,7 @@ class _CallPageState extends State<CallPage> {
                             Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(360))),
+                                      BorderRadius.all(Radius.circular(360))),
                               child: CircleAvatar(
                                 radius: radius,
                                 backgroundColor: Colors.white,
@@ -257,15 +244,8 @@ class _CallPageState extends State<CallPage> {
                       right: 20,
                       bottom: 80,
                       child: Container(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 2.5,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 3,
-
+                        height: MediaQuery.of(context).size.width / 2.5,
+                        width: MediaQuery.of(context).size.width / 3,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage(image.toString()),
@@ -273,12 +253,11 @@ class _CallPageState extends State<CallPage> {
                             ),
                             color: Colors.black,
                             border: Border.all(color: Colors.black)),
-                        // child: Center(
-                        //     child:
-                        //   _localUserJoined
-                        //       ? RtcLocalView.SurfaceView()
-                        //       : CircularProgressIndicator(),
-                        // ),
+                        child: Center(
+                          child: _localUserJoined
+                              ? RtcLocalView.SurfaceView()
+                              : CircularProgressIndicator(),
+                        ),
                       )),
                   // Positioned(
                   //     right: 20,
@@ -304,11 +283,13 @@ class _CallPageState extends State<CallPage> {
     print("_remoteUid:$_remoteUid");
 
     if (_remoteUid != null) {
+      setState(() {});
       return RtcRemoteView.SurfaceView(
         uid: _remoteUid!,
         channelId: AgoraDetails.appChannelName,
       );
     }
+    setState(() {});
     return null;
   }
 

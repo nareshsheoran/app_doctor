@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 String appName = "Doctor App";
-
+// 84fc1880856b4752a73a2b1ef001425a
 class AgoraDetails {
-  static const String appId = "e0a67f7e0aab47d6a54728d62e8e11e0";
-  static const String appPrimCertificate = "bb68fe1de2d84b179bd3767a5737d46a";
+  static const String appId = "abd101ad1bd446199da879555cc2234c";
+  static const String appPrimCertificate = "84fc1880856b4752a73a2b1ef001425a";
   static const String appSecCertificate = "4803fc3b105e461e8f296af71e480924";
   static const String appChannelName = "Doctor";
   static const String appToken =
-      "007eJxTYPhVc9F8/wwNAZ6movwJW/9GiV810g2ZIf57p1CM2Vf7jZYKDKkGiWbmaeZAKjHJxDzFLNHUxNzIIsXMKNUi1dAw1cDyg0dyfSAjQ67DRGZGBggE8dkYXPKTS/KLGBgAWaofNw==";
+      "007eJxTYJh7L+zLFo1mn7LqQ096F2+xfszmvN5VR3tnmUBm7sdnv6cpMCQmpRgaGCamGCalmJiYGVpapiRamFuampomJxsZGZskP2NJTm0IZGRgEDVhZWSAQBCfjcElP7kkv4iBAQDqWSAq";
 }
 
 class Constant {
